@@ -1,0 +1,45 @@
+#include <ee108.h>
+
+
+const int SUPERLOOP_DELAY_MS = 50;
+
+
+void setup() {
+  
+  Serial.begin(9600);
+  Serial.println("\n\nLab8_PasswordGenStarter starting...\n");
+  Serial.println("\nClick SW1 to start\n");    
+}
+
+void loop() {
+  int sw1Event;
+  static char pw[10]={'P','A','S','S','W','O','R','D','\0'};
+
+  sw1Event = readSwitchEvent(sw1Object);
+
+  if (sw1Event == SW_RELEASE_CLICK) { // wait for click
+   Serial.print("[SW1 Click] current password is: ");
+   Serial.println(pw);
+  } 
+  else if (sw1Event == SW_LONG_CLICK) {
+   Serial.print("[SW1 Long Click] new password (len =  ");
+   int len=random(4,11);
+   Serial.print(len);
+   Serial.print("): ");
+   for(int i=0;i<len;i++)
+   {
+     pw[i]= 'A' + random(26);
+     Serial.print(pw[i]);
+     if(i==len-1)
+     {
+      pw[i+1]= '\0';
+     }
+   }
+    
+   
+    
+   Serial.println();
+  }
+  
+  delay(SUPERLOOP_DELAY_MS);
+}
